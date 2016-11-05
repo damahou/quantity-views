@@ -1,0 +1,29 @@
+{
+  "name": "quantity-views",
+  "author": "J Miguel Farto",
+  "version": "1.0.0",
+  "description": "Library for view/set a quantity in several units",
+  "license": "MIT",
+  "main": "lib/quantity-views.js",
+  "engines": {"node": ">=6.8.1"},
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/damahou/quantity-views.git"
+  },
+  "bugs": {
+    "url": "https://github.com/damahou/quantity-views/issues"
+  },
+  "keywords": [
+    "quantity",
+    "units",
+    "unit",
+    "conversion"
+  ],
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  }
+}
