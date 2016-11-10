@@ -1,7 +1,7 @@
 {
   "name": "quantity-views",
   "author": "J Miguel Farto",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Library for view/set a quantity in several units",
   "license": "MIT",
   "main": "lib/quantity-views.js",

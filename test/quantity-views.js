@@ -140,7 +140,7 @@ describe('#Unit operation', () => {
 describe('#Quantity methods and properties', () => {
     let Q = Quantity;
     let q = new Quantity();
-    let props = ['_value', 'name', 'precision'];
+    let props = ['_value', 'name', 'precision', 'unit', 'value'];
     let smethods = ['_addUnit', 'create'];
     let methods = [];
     it('Quantity class respond to static methods', () => {
@@ -195,5 +195,25 @@ describe('#Quantity creation', () => {
     it('conversion', () => {
         l1.centimetre = 1;
         l1.metre.should.equal(0.01);
+    });
+    it('Default .unit is correct', () => {
+        l1.unit.should.equal(l1.units[0]);
+    });
+    it('Get .value is correct', () => {
+        l1.value.should.equal(l1[l1.units[0]]);
+    });
+    it('Set .value is correct', () => {
+        let v = 7;
+        let u1 = l1.units[0];
+        let u2 = l1.units[3];
+        l1.value = v
+        l1.value.should.equal(v);
+        l1.unit = u2;
+        l1.value.should.not.equal(v)
+        l1.value = v;
+        l1.value.should.equal(v);
+        l1.unit = 'foo';
+        expect(l1.value).to.be.undefined;
+        l1[u2].should.equal(v);
     });
 });

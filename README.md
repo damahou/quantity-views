@@ -36,7 +36,7 @@ and instanciate it as an object representing for example a width, with a
 value of 1 (1 what? More below)    
 
     > width = new Length(value=1, name='width')
-    Length { _value: 1, name: 'width', precision: 15 }
+    Length { _value: 1, name: 'width', precision: 15, unit: 'metre' }
 
 Check the available units that `width` can display/be set
 
@@ -145,14 +145,14 @@ The quantity classes available on `require(quantity-views)`, are
 
 Their constructors can take the optional arguments
 
-- `value` A number. Defaults to `NaN`. This is stored in the `._value` property.
+- `value` A number. Defaults to `NaN`. This is stored in the `this._value` property.
   It is the value of the quantity in no particular unit. For the builtin
-  quantity classes, `._value` attribute coincides with the value of the
+  quantity classes, `this._value` attribute coincides with the value of the
   quantity in the corresponding SI base unit.
-- `name` A string. Defaults to `''`. Stored in the `.name` attribute. 
+- `name` A string. Defaults to `''`. Stored in the `this.name` attribute. 
   Not used by the library. It is an user field.
 - `precision` A number within 1 and 21 or `null`. Defaults to 15. Stored in the
-  `.precision` attribute. If `.precision` is a number, all unit queries are
+  `this.precision` attribute. If `.precision` is a number, all unit queries are
   strings formatted with 'Number.prototype.toPrecision(quantity.precision)'.
   If precision is `null`, raw numbers are returned:
 
@@ -162,7 +162,7 @@ Their constructors can take the optional arguments
       > Length = require('quantity-views').Length
       [Function: Length]
       > distance = new Length()
-      Length { _value: NaN, name: '', precision: 15 }
+      Length { _value: NaN, name: '', precision: 15, unit: 'metre' }
       > distance.nauticalMille = 2
       2
       > distance.kilometre
@@ -188,6 +188,69 @@ Their constructors can take the optional arguments
       > distance.mille
       'NaN'
 
+- `unit` A string or `null`. Defaults to `null`. If it is `null` and 
+  `this.units` is set, `this.unit` is set to `this.units[0]`, else 
+  `this.unit` takes this value.
+
+  `this.unit` has a side effect in `this.value`:
+
+      $ node
+      > Length = require('quantity-views').Length
+      [Function: Length]
+      > distance = new Length(3)
+      Length { _value: 3, name: '', precision: 15, unit: 'metre' }
+      > distance.units
+      [ 'metre',
+        'centimetre',
+        'millimetre',
+        'inch',
+        'foot',
+        'footUS',
+        'yard',
+        'kilometre',
+        'nauticalMille',
+        'mille',
+        'milleUS' ]
+      > distance.unit
+      'metre'
+
+The `value` property returns meters:
+
+      > distance.value
+      '3.00000000000000'
+
+Now, if `unit` property is set to inches, the `value` property returns inches:
+
+      > distance.unit = 'inch'
+      'inch'
+      > distance.value
+      '118.110236220472'
+
+And setting `value` property is the same as if `inches` property were set
+
+      > distance.value = 100
+      100
+      > distance.metre
+      '2.54000000000000'
+      > distance.inch
+      '100.000000000000'
+      > distance.value
+      '100.000000000000'
+
+If a invalid value for `unit` is established, `value` returns `undefined,
+
+      > distance.unit = 'foo'
+      'foo'
+      > distance.value
+      undefined
+
+and subsequent assignments to the `value`property are ignored:
+
+      > distance.value = 1
+      1
+      > distance.inch
+      '100.000000000000'
+
 ## User defined quantities
 
 Builtin quantity classes are described in
@@ -206,7 +269,11 @@ constructor for new quantity classes:
     ... {name: 'parsec', multiplier: 1/3.085677581e16, symbol: 'pc'}]})
     { Mylength: [Function: Mylength] }
     > coriolanusOdometre = new MyQties.Mylength(1e13)
-    Mylength { _value: 10000000000000, name: '', precision: 15 }
+    Mylength { 
+      _value: 10000000000000,
+      name: '',
+      precision: 15,
+      unit: 'astronomicalUnit' }
     > coriolanusOdometre.astronomicalUnit
     '66.8458712226845'
     > coriolanusOdometre.lightSecond
@@ -218,6 +285,12 @@ constructor for new quantity classes:
 
 Note also that in this example the `._value` is not stored in any unit of the
 quantity.
+
+## Changelog
+
+- v 1.1.0: `unit` and `value` properties added.
+
+- v 1.0.0: Initial version
 
 ## License
 
