@@ -290,6 +290,8 @@ quantity.
 
 ## Changelog
 
+- v 1.1.3: Mass units fixed.
+
 - v 1.1.2: Density symbols fixed.
 
 - v 1.1.1: Density symbols fixed.
