@@ -290,6 +290,8 @@ quantity.
 
 ## Changelog
 
+- v 1.1.2: Density symbols fixed.
+
 - v 1.1.1: Density symbols fixed.
 
 - v 1.1.0: `unit` and `value` properties added.
