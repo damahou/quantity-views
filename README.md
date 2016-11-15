@@ -145,10 +145,12 @@ The quantity classes available on `require(quantity-views)`, are
 
 Their constructors can take the optional arguments
 
-- `value` A number. Defaults to `NaN`. This is stored in the `this._value` property.
-  It is the value of the quantity in no particular unit. For the builtin
-  quantity classes, `this._value` attribute coincides with the value of the
-  quantity in the corresponding SI base unit.
+- `value` A number. Defaults to `NaN`. This is stored in the `this.value`
+  property, provided that `unit` (see below) is one of the valid quantity units
+  listed in `this.units`. In other case, `this._value` is set to NaN. For
+  the builtin quantity classes, `this._value` attribute coincides with the
+  value of the quantity in the corresponding SI base unit (the first unit in
+  `this.units`).
 - `name` A string. Defaults to `''`. Stored in the `this.name` attribute. 
   Not used by the library. It is an user field.
 - `precision` A number within 1 and 21 or `null`. Defaults to 15. Stored in the
@@ -214,42 +216,42 @@ Their constructors can take the optional arguments
       > distance.unit
       'metre'
 
-The `value` property returns meters:
+  The `value` property returns metres:
 
-      > distance.value
-      '3.00000000000000'
+        > distance.value
+        '3.00000000000000'
 
-Now, if `unit` property is set to inches, the `value` property returns inches:
+  Now, if `unit` property is set to inches, the `value` property returns inches:
 
-      > distance.unit = 'inch'
-      'inch'
-      > distance.value
-      '118.110236220472'
+        > distance.unit = 'inch'
+        'inch'
+        > distance.value
+        '118.110236220472'
 
-And setting `value` property is the same as if `inches` property were set
+  And setting `value` property is the same as if `inches` property were set
 
-      > distance.value = 100
-      100
-      > distance.metre
-      '2.54000000000000'
-      > distance.inch
-      '100.000000000000'
-      > distance.value
-      '100.000000000000'
+        > distance.value = 100
+        100
+        > distance.metre
+        '2.54000000000000'
+        > distance.inch
+        '100.000000000000'
+        > distance.value
+        '100.000000000000'
 
-If a invalid value for `unit` is established, `value` returns `undefined,
+  If a invalid value for `unit` is established, `value` returns `undefined,
 
-      > distance.unit = 'foo'
-      'foo'
-      > distance.value
-      undefined
+        > distance.unit = 'foo'
+        'foo'
+        > distance.value
+        undefined
 
-and subsequent assignments to the `value`property are ignored:
+  and subsequent assignments to the `value`property are ignored:
 
-      > distance.value = 1
-      1
-      > distance.inch
-      '100.000000000000'
+        > distance.value = 1
+        1
+        > distance.inch
+        '100.000000000000'
 
 ## User defined quantities
 
@@ -268,20 +270,20 @@ constructor for new quantity classes:
     ... {name: 'lightSecond', multiplier: 1/299792458, symbol: ''},
     ... {name: 'parsec', multiplier: 1/3.085677581e16, symbol: 'pc'}]})
     { Mylength: [Function: Mylength] }
-    > coriolanusOdometre = new MyQties.Mylength(1e13)
+    > coriolanusOdometre = new MyQties.Mylength(66)
     Mylength { 
-      _value: 10000000000000,
+      _value: 9873459466200,
       name: '',
       precision: 15,
       unit: 'astronomicalUnit' }
     > coriolanusOdometre.astronomicalUnit
-    '66.8458712226845'
+    '66.0000000000000'
     > coriolanusOdometre.lightSecond
-    '33356.4095198152'
+    '32934.3157331863'
     > coriolanusOdometre.parsec
-    '0.000324077928996043'
+    '0.000319977029583247'
     > coriolanusOdometre._value
-    10000000000000
+    9873459466200
 
 Note also that in this example the `._value` is not stored in any unit of the
 quantity.
@@ -289,6 +291,7 @@ quantity.
 ## Changelog
 
 - v 1.1.0: `unit` and `value` properties added.
+
 
 - v 1.0.0: Initial version
 
